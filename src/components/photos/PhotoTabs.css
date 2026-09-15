@@ -1,0 +1,39 @@
+.photo-tabs-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.photo-tabs-pill {
+  display: inline-flex;
+  background: var(--dark-card-glass);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+}
+
+.photo-tab-btn {
+  padding: 6px 22px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.photo-tab-btn:hover {
+  color: #ffffff;
+}
+
+.photo-tab-btn.active {
+  background: rgba(255, 26, 94, 0.28);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 0 14px rgba(255, 26, 94, 0.35);
+}
+

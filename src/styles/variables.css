@@ -1,0 +1,52 @@
+:root {
+  /* Əsas Rəng Palitrası */
+  --primary-pink: #ff1a5e;
+  --primary-pink-light: #ff6090;
+  --primary-pink-dark: #c2185b;
+  --primary-pink-soft: #ff85a2;
+  --primary-pink-glow: rgba(255, 26, 94, 0.55);
+
+  --secondary-rose: #ff6b9d;
+  --secondary-coral: #ff7eb3;
+
+  /* Qaranlıq Fon və Şüşə (Glassmorphism) - Zəif blur və aydın fon */
+  --dark-bg: #050408;
+  --dark-card-glass: rgba(18, 12, 24, 0.36);
+  --dark-pill-glass: rgba(20, 14, 28, 0.38);
+  
+  --glass-border-subtle: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(4px);
+
+  /* Mətn Rəngləri */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.9);
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --text-pink: #ff1a5e;
+  --text-pink-light: #ff7597;
+
+  /* Fontlar */
+  --font-script: 'Great Vibes', cursive;
+  --font-heading: 'Dancing Script', cursive;
+  --font-body: 'Outfit', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Radiuslar */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* Kölgələr */
+  --shadow-card: 0 8px 28px 0 rgba(0, 0, 0, 0.35);
+  --shadow-glow: 0 0 20px rgba(255, 26, 94, 0.4);
+
+  /* Z-Index */
+  --z-bg: 0;
+  --z-content: 10;
+  --z-bottom-nav: 50;
+  --z-mini-player: 45;
+  --z-full-player: 100;
+  --z-toast: 200;
+  --z-modal: 150;
+}

@@ -1,0 +1,52 @@
+.surprise-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 22px;
+  width: 100%;
+}
+
+.surprise-glass-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 250px;
+  height: 44px;
+  background: var(--dark-card-glass);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.surprise-glass-btn:hover {
+  background: rgba(26, 16, 32, 0.5);
+  border-color: rgba(255, 26, 94, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 26, 94, 0.2);
+}
+
+.surprise-glass-btn:active {
+  transform: translateY(0);
+}
+
+.surprise-gift-icon {
+  color: var(--text-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 6px rgba(255, 26, 94, 0.4));
+}
+
+.surprise-script-text {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--text-pink);
+  text-shadow: 0 0 8px rgba(255, 26, 94, 0.4);
+  letter-spacing: 0.3px;
+}

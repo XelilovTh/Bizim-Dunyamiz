@@ -1,0 +1,92 @@
+.hold-heart-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.hold-heart-script-label {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--text-pink);
+  margin-bottom: 8px;
+  text-shadow: 0 0 10px rgba(255, 26, 94, 0.5);
+  letter-spacing: 0.5px;
+}
+
+.hold-heart-interactive {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+}
+
+.hold-heart-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 26, 94, 0.35) 0%,
+    rgba(255, 26, 94, 0.08) 55%,
+    transparent 70%
+  );
+  transition: transform 0.08s linear, filter 0.08s linear;
+}
+
+.solid-pink-heart {
+  color: var(--text-pink);
+  fill: var(--text-pink);
+  transition: all 0.2s ease;
+}
+
+.hold-heart-text-wrapper {
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.hold-heart-percent-script {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--text-pink);
+  text-shadow: 0 0 8px rgba(255, 26, 94, 0.45);
+}
+
+.hold-heart-love-text {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--text-pink);
+  text-shadow: 0 0 14px rgba(255, 26, 94, 0.8), 0 0 24px rgba(255, 26, 94, 0.4);
+  letter-spacing: 0.5px;
+  animation: loveTextPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.hold-heart-interactive.maxed .solid-pink-heart {
+  animation: maxedHeartbeat 0.8s ease-in-out infinite;
+}
+
+@keyframes loveTextPop {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes maxedHeartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); filter: drop-shadow(0 0 25px rgba(255, 26, 94, 0.9)); }
+}

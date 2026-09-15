@@ -1,0 +1,629 @@
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 2, 10, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: var(--z-modal);
+  animation: fadeIn 0.25s ease;
+}
+
+@media (min-width: 480px) {
+  .admin-modal-overlay {
+    align-items: center;
+    padding: 20px;
+  }
+}
+
+.admin-modal-sheet {
+  width: 100%;
+  max-width: 440px;
+  max-height: 88vh;
+  background: rgba(18, 10, 24, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-bottom: none;
+  border-radius: 26px 26px 0 0;
+  padding: 14px 20px 32px 20px;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.22), 0 -10px 40px rgba(0, 0, 0, 0.7), 0 0 35px rgba(255, 26, 94, 0.18);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 26, 94, 0.3) transparent;
+  animation: slideSheetUp 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  position: relative;
+}
+
+@media (min-width: 480px) {
+  .admin-modal-sheet {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 26px;
+    max-height: 85vh;
+  }
+}
+
+/* Üst Çəkmə Tutacağı */
+.admin-sheet-handle {
+  width: 40px;
+  height: 4.5px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-full);
+  margin: 0 auto 14px auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Başlıq */
+.admin-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.admin-header-title-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-header-sparkle {
+  color: var(--text-pink);
+  filter: drop-shadow(0 0 8px var(--primary-pink-glow));
+}
+
+.admin-header-title {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.4px;
+  text-shadow: 0 0 12px rgba(255, 26, 94, 0.45);
+}
+
+.admin-modal-close-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-modal-close-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 26, 94, 0.25);
+  border-color: rgba(255, 26, 94, 0.5);
+  transform: scale(1.06);
+}
+
+/* 3 Tab Naviqasiyası */
+.admin-tabs-nav {
+  display: flex;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 4px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 18px;
+}
+
+.admin-nav-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.admin-nav-tab:hover {
+  color: #ffffff;
+}
+
+.admin-nav-tab.active {
+  background: linear-gradient(135deg, rgba(255, 26, 94, 0.4), rgba(255, 75, 130, 0.25));
+  color: #ffffff;
+  font-weight: 600;
+  border: 1px solid rgba(255, 26, 94, 0.45);
+  box-shadow: 0 0 16px rgba(255, 26, 94, 0.35);
+}
+
+/* Form Ümumi */
+.admin-tab-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Glass Dropzone */
+.admin-dropzone.glass-dropzone {
+  border: 1.5px dashed rgba(255, 26, 94, 0.45);
+  border-radius: var(--radius-lg);
+  padding: 22px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(255, 26, 94, 0.05);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: all 0.25s ease;
+}
+
+.admin-dropzone.glass-dropzone:hover {
+  border-color: var(--primary-pink);
+  background: rgba(255, 26, 94, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 26, 94, 0.25);
+}
+
+.admin-hidden-file-input {
+  display: none;
+}
+
+.dropzone-icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 26, 94, 0.18);
+  border: 1px solid rgba(255, 26, 94, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  box-shadow: 0 0 14px rgba(255, 26, 94, 0.3);
+}
+
+.dropzone-icon {
+  color: #ffffff;
+  filter: drop-shadow(0 0 4px var(--primary-pink));
+}
+
+.dropzone-main-text {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+}
+
+.dropzone-sub-text {
+  font-size: 0.78rem;
+  color: var(--text-pink-soft);
+  margin-top: 3px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   YÜKLƏNMƏ NÖVBƏSİ (PENDING QUEUE - ŞƏKİL VƏ MUSİQİ)
+   ========================================================================== */
+.pending-queue-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: fadeIn 0.25s ease;
+}
+
+.queue-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.queue-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-pink);
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 8px rgba(255, 26, 94, 0.4);
+}
+
+.queue-clear-all-btn {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: color 0.2s ease;
+  background: none;
+  border: none;
+}
+
+.queue-clear-all-btn:hover {
+  color: #ff3366;
+  text-decoration: underline;
+}
+
+/* Şəkil Siyahısı */
+.pending-photos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 26, 94, 0.3) transparent;
+}
+
+.glass-queue-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.glass-queue-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 26, 94, 0.35);
+}
+
+.pending-photo-thumb-box {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.pending-photo-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pending-index-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.pending-item-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.pending-item-filename {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pending-item-meta {
+  font-size: 0.76rem;
+  color: var(--text-pink-soft);
+  margin-top: 2px;
+}
+
+/* Siyahıdan Silmə Düyməsi (X / Trash) */
+.pending-item-delete-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.pending-item-delete-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 26, 94, 0.35);
+  border-color: #ff1a5e;
+  box-shadow: 0 0 10px rgba(255, 26, 94, 0.4);
+  transform: scale(1.08);
+}
+
+/* Musiqi Siyahısı */
+.pending-music-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 26, 94, 0.3) transparent;
+}
+
+.pending-music-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.queue-play-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 26, 94, 0.2);
+  border: 1px solid rgba(255, 26, 94, 0.4);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.queue-play-btn:hover,
+.queue-play-btn.playing {
+  background: var(--primary-pink);
+  box-shadow: 0 0 10px var(--primary-pink-glow);
+  transform: scale(1.06);
+}
+
+.queue-music-inputs {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.queue-inline-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  color: #ffffff;
+  font-family: var(--font-body);
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+
+.queue-inline-input:focus {
+  border-bottom-color: rgba(255, 26, 94, 0.6);
+}
+
+.queue-inline-input.title-input {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.queue-inline-input.artist-input {
+  font-size: 0.78rem;
+  color: var(--text-pink-soft);
+}
+
+.queue-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.queue-duration-badge {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   MƏKTUBLAR VƏ DİGƏR SAHƏLƏR
+   ========================================================================== */
+.admin-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-input-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-pink-soft);
+}
+
+.admin-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-input-wrapper:focus-within {
+  border-color: rgba(255, 26, 94, 0.6);
+  box-shadow: 0 0 12px rgba(255, 26, 94, 0.3);
+}
+
+.admin-input-icon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.admin-text-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+}
+
+.admin-text-input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* Müəllif Seçimi (Təhmaz / Fidan) */
+.admin-author-selector {
+  display: flex;
+  gap: 10px;
+}
+
+.author-choice-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.author-choice-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.author-choice-btn.selected {
+  background: rgba(255, 26, 94, 0.28);
+  border-color: var(--primary-pink);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 0 14px rgba(255, 26, 94, 0.35);
+}
+
+/* Textarea */
+.admin-textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  resize: vertical;
+  outline: none;
+  line-height: 1.5;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-textarea:focus {
+  border-color: rgba(255, 26, 94, 0.6);
+  box-shadow: 0 0 12px rgba(255, 26, 94, 0.3);
+}
+
+.admin-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* Tarix Bildirişi */
+.admin-date-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding: 0 2px;
+}
+
+.date-badge-icon {
+  color: var(--text-pink-soft);
+}
+
+/* Təsdiq Düyməsi */
+.admin-submit-btn,
+.admin-submit-btn.glass-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #ff1a5e 0%, #ff4b82 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(255, 26, 94, 0.45), 0 0 12px rgba(255, 75, 130, 0.25);
+  transition: all 0.25s ease;
+  margin-top: 6px;
+}
+
+.admin-submit-btn:hover:not(:disabled),
+.admin-submit-btn.glass-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(255, 26, 94, 0.6), 0 0 18px rgba(255, 75, 130, 0.35);
+}
+
+.admin-submit-btn:active:not(:disabled),
+.admin-submit-btn.glass-submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.admin-submit-btn:disabled,
+.admin-submit-btn.glass-submit-btn:disabled {
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.42) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+@keyframes slideSheetUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

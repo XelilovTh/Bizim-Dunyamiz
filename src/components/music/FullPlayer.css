@@ -1,0 +1,567 @@
+.full-player-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 2, 10, 0.58);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-full-player);
+  animation: slideFullPlayerUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.full-player-glass-card {
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  max-height: 100vh;
+  background: rgba(18, 10, 24, 0.52);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 22px 24px 38px 24px;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 20px 60px rgba(0, 0, 0, 0.7);
+  overflow-y: auto;
+  scrollbar-width: none;
+  position: relative;
+}
+
+.full-player-glass-card::-webkit-scrollbar {
+  display: none;
+}
+
+/* ==========================================================================
+   ÜST HEADER (Aşağı ox, Qradiyent Loqo, Favori ürək)
+   ========================================================================== */
+.full-player-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  z-index: 2;
+}
+
+.full-player-icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.full-player-icon-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.14);
+  transform: scale(1.08);
+}
+
+.full-player-icon-btn:active {
+  transform: scale(0.94);
+}
+
+.full-player-icon-btn.favorited {
+  background: rgba(255, 26, 94, 0.15);
+  border-color: rgba(255, 26, 94, 0.45);
+  box-shadow: 0 0 16px rgba(255, 26, 94, 0.35);
+}
+
+.header-heart {
+  transition: all 0.25s ease;
+}
+
+.full-player-icon-btn.favorited .header-heart {
+  filter: drop-shadow(0 0 8px #ff1a5e);
+}
+
+.full-player-logo-script {
+  font-family: var(--font-script);
+  font-size: 2.2rem;
+  background: linear-gradient(90deg, #ff1259 0%, #ff4b82 28%, #ffffff 48%, #ff4b82 72%, #ff1259 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 12px rgba(255, 26, 94, 0.45));
+  letter-spacing: 0.5px;
+  user-select: none;
+}
+
+/* ==========================================================================
+   VİNİL VƏ CANLI ARXA İŞIQ
+   ========================================================================== */
+.vinyl-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0 20px 0;
+  position: relative;
+}
+
+/* Canlı Nəfəs Alan Aura */
+.ambient-vinyl-glow {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 26, 94, 0.28) 0%, rgba(255, 75, 130, 0.12) 45%, transparent 70%);
+  filter: blur(35px);
+  pointer-events: none;
+  opacity: 0.4;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  z-index: 0;
+}
+
+.ambient-vinyl-glow.active {
+  opacity: 1;
+  animation: auraBreathe 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes auraBreathe {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+    filter: blur(30px);
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 1;
+    filter: blur(45px);
+  }
+}
+
+.vinyl-wrapper {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  z-index: 1;
+}
+
+/* Fırlanan Vinil Disk */
+.vinyl-disc {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #251222 0%,
+    #170b19 25%,
+    #0e0610 55%,
+    #050206 100%
+  );
+  border: 4px solid #160c19;
+  box-shadow: 
+    0 18px 45px rgba(0, 0, 0, 0.85),
+    0 0 35px rgba(255, 26, 94, 0.25),
+    inset 0 0 18px rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.vinyl-disc.spinning {
+  animation: spinVinyl 9s linear infinite;
+}
+
+.vinyl-disc.paused {
+  animation: spinVinyl 9s linear infinite;
+  animation-play-state: paused;
+}
+
+/* Vinil Üzərində Həqiqi İşıq Parıltısı (Sheen) */
+.vinyl-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 45deg,
+    rgba(255, 255, 255, 0.09) 0deg,
+    transparent 45deg,
+    rgba(255, 255, 255, 0.05) 90deg,
+    transparent 135deg,
+    rgba(255, 255, 255, 0.09) 180deg,
+    transparent 225deg,
+    rgba(255, 255, 255, 0.05) 270deg,
+    transparent 315deg,
+    rgba(255, 255, 255, 0.09) 360deg
+  );
+  pointer-events: none;
+}
+
+/* Vinil Cığırları */
+.vinyl-groove {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+}
+
+.groove-outer { width: 228px; height: 228px; border-color: rgba(255, 255, 255, 0.035); }
+.groove-1     { width: 195px; height: 195px; border-color: rgba(255, 255, 255, 0.045); }
+.groove-2     { width: 160px; height: 160px; border-color: rgba(255, 255, 255, 0.055); }
+.groove-3     { width: 130px; height: 130px; border-color: rgba(255, 255, 255, 0.045); }
+.groove-inner { width: 105px; height: 105px; border-color: rgba(255, 255, 255, 0.06); }
+
+/* Mərkəzi Etiket */
+.vinyl-center-label {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ff2a6d 0%, #b30c3e 65%, #4f031c 100%);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.65), 0 0 20px rgba(255, 26, 94, 0.5);
+  position: relative;
+}
+
+.vinyl-label-rim {
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+}
+
+.vinyl-center-heart {
+  color: #ffffff;
+  fill: #ffffff;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.85));
+  z-index: 1;
+}
+
+.vinyl-spindle-hole {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #000000;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.9);
+  z-index: 2;
+}
+
+/* ==========================================================================
+   TONEARM (VİNİL QOLCUĞU VƏ İYNƏSİ)
+   ========================================================================== */
+.vinyl-tonearm {
+  position: absolute;
+  top: -16px;
+  right: -8px;
+  width: 54px;
+  height: 120px;
+  pointer-events: none;
+  transform-origin: 38px 12px;
+  transform: rotate(-26deg);
+  transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 3;
+}
+
+.vinyl-tonearm.active {
+  transform: rotate(8deg);
+}
+
+/* Tonearm Bazası */
+.tonearm-base {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #e2e2e2 0%, #7c7c7c 65%, #383838 100%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tonearm-base-core {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.9);
+}
+
+/* Tonearm Qol Şaftı */
+.tonearm-rod {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  width: 4px;
+  height: 92px;
+  background: linear-gradient(to right, #cfcfcf, #ffffff 40%, #888888 100%);
+  border-radius: 2px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.65);
+}
+
+.tonearm-head {
+  position: absolute;
+  bottom: 8px;
+  left: -2px;
+  width: 8px;
+  height: 16px;
+  background: #2b2b2b;
+  border-radius: 2px;
+}
+
+/* Kartric və İynə Parıltısı */
+.tonearm-cartridge {
+  position: absolute;
+  bottom: -4px;
+  left: -5px;
+  width: 14px;
+  height: 10px;
+  background: linear-gradient(135deg, #ff1a5e, #c70b42);
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(255, 26, 94, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tonearm-needle-glow {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 6px #ff1a5e, 0 0 10px #ff4b82;
+}
+
+/* ==========================================================================
+   MAHNI MƏLUMATLARI
+   ========================================================================== */
+.full-player-track-info {
+  text-align: center;
+  margin-bottom: 14px;
+  z-index: 2;
+}
+
+.track-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.full-track-title {
+  font-family: var(--font-heading);
+  font-size: 1.95rem;
+  font-style: italic;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 2px 14px rgba(255, 26, 94, 0.55);
+  line-height: 1.25;
+}
+
+.full-track-artist {
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  font-weight: 500;
+  color: var(--text-pink-soft);
+  margin-top: 5px;
+  letter-spacing: 0.4px;
+}
+
+/* ==========================================================================
+   SCRUB BAR / İRƏLİLƏYİŞ ZOLAĞI
+   ========================================================================== */
+.full-player-progress-area {
+  width: 100%;
+  margin-bottom: 20px;
+  z-index: 2;
+}
+
+.progress-slider-wrapper {
+  width: 100%;
+}
+
+.scrub-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: var(--radius-full);
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: height 0.15s ease;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.scrub-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2.5px solid var(--primary-pink);
+  box-shadow: 0 0 10px var(--primary-pink-glow), 0 2px 5px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.scrub-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.22);
+  box-shadow: 0 0 14px var(--primary-pink-glow), 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.progress-time-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 9px;
+  font-size: 0.86rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   İDARƏETMƏ DÜYMƏLƏRİ (SHUFFLE, PREV, PLAY/PAUSE, NEXT, REPEAT)
+   ========================================================================== */
+.full-player-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  z-index: 2;
+}
+
+.control-btn-subtle {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.55);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.control-btn-subtle:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.control-btn-subtle.active-pink {
+  color: var(--text-pink);
+  filter: drop-shadow(0 0 8px var(--primary-pink-glow));
+}
+
+.ctrl-active-dot {
+  position: absolute;
+  bottom: 5px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text-pink);
+  box-shadow: 0 0 6px var(--text-pink);
+}
+
+/* Naviqasiya Düymələri (Geri / İrəli) */
+.control-btn-nav {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.control-btn-nav:hover {
+  transform: scale(1.12);
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-pink-soft);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+.control-btn-nav:active {
+  transform: scale(0.94);
+}
+
+/* Əsas Play / Pause Düyməsi */
+.control-btn-play-main {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff1a5e 0%, #ff4b82 50%, #e00d45 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 28px rgba(255, 26, 94, 0.65), 0 8px 24px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+  position: relative;
+}
+
+.control-btn-play-main:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 36px rgba(255, 26, 94, 0.8), 0 10px 28px rgba(0, 0, 0, 0.5);
+}
+
+.control-btn-play-main:active {
+  transform: scale(0.94);
+}
+
+.control-btn-play-main.playing {
+  animation: playPulse 2.8s infinite ease-in-out;
+}
+
+@keyframes playPulse {
+  0% {
+    box-shadow: 0 0 24px rgba(255, 26, 94, 0.6), 0 8px 20px rgba(0, 0, 0, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 38px rgba(255, 26, 94, 0.85), 0 8px 25px rgba(0, 0, 0, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 24px rgba(255, 26, 94, 0.6), 0 8px 20px rgba(0, 0, 0, 0.45);
+  }
+}
+
+.main-play-icon {
+  margin-left: 4px;
+}
+
+/* ==========================================================================
+   ANIMASIYALAR
+   ========================================================================== */
+@keyframes spinVinyl {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes slideFullPlayerUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

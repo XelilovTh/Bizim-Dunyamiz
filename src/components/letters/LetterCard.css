@@ -1,0 +1,158 @@
+.letter-card-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--dark-card-glass);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  transition: all 0.22s ease;
+  user-select: none;
+}
+
+.letter-card-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 26, 94, 0.3);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4), 0 0 14px rgba(255, 26, 94, 0.2);
+}
+
+.letter-card-item.selected {
+  border: 2px solid var(--primary-pink);
+  transform: scale(0.98);
+  box-shadow: 0 0 16px rgba(255, 26, 94, 0.35);
+}
+
+.letter-card-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 26, 94, 0.12);
+  border: 1px solid rgba(255, 26, 94, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-pink);
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px rgba(255, 26, 94, 0.3));
+}
+
+.letter-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.letter-card-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.letter-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.letter-card-title {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.letter-favorite-indicator {
+  color: var(--text-pink);
+  fill: var(--text-pink);
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 4px rgba(255, 26, 94, 0.5));
+}
+
+.letter-card-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  color: var(--text-pink-light);
+  font-style: italic;
+  flex-shrink: 0;
+}
+
+.date-icon {
+  color: var(--text-pink);
+}
+
+.letter-card-preview {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.letter-card-author-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--text-pink-soft);
+  background: rgba(255, 26, 94, 0.1);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.author-icon {
+  color: var(--text-pink);
+}
+
+.letter-card-action {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.letter-arrow-icon {
+  color: var(--text-muted);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.letter-card-item:hover .letter-arrow-icon {
+  color: #ffffff;
+  transform: translateX(3px);
+}
+
+/* Checkbox */
+.letter-select-checkbox {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  background: rgba(18, 12, 24, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.letter-select-checkbox.checked {
+  background: var(--primary-pink);
+  border-color: var(--primary-pink);
+  box-shadow: 0 0 10px var(--primary-pink-glow);
+}
