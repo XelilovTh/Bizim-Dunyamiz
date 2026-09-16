@@ -23,10 +23,12 @@ export default async function handler(req, res) {
   const GH_TOKEN = process.env.GH_TOKEN;
 
   const CL_NAME = process.env.CL_NAME || 'dojz9uzhe';
+  const CL_PRESET = process.env.VITE_CL_PRESET || process.env.CL_PRESET || 'dunyamiz';
   const CL_KEY = process.env.CL_KEY || '241982348988817';
   const CL_SECRET = process.env.CL_SECRET || '';
 
   const CL_MUSIC_NAME = process.env.CL_MUSIC_NAME || 'drlzwhblg';
+  const CL_MUSIC_PRESET = process.env.VITE_CL_MUSIC_PRESET || process.env.CL_MUSIC_PRESET || 'dunyamiz_music';
   const CL_MUSIC_KEY = process.env.CL_MUSIC_KEY || '583362931417988';
   const CL_MUSIC_SECRET = process.env.CL_MUSIC_SECRET || '';
 
@@ -114,11 +116,18 @@ export default async function handler(req, res) {
         });
 
         await answerCallbackQuery(TG_TOKEN, cq.id, `Müəllif: ${author} seçildi!`);
+        
+        const resultText = ghRes.ok
+          ? `✅ <b>Məktub uğurla əlavə edildi!</b> ✉️\n\n📌 <b>Başlıq:</b> ${escapeHtml(title)}\n✍️ <b>Müəllif:</b> ${author}\n🌐 <a href="https://dunyamiz-tf.vercel.app">Saytda oxumaq üçün klikləyin</a>`
+          : `❌ GitHub-a göndərilərkən xəta baş verdi.`;
+
+        // 1. Mövcud sual mesajını redaktə edib düymələri təmizləyirik
         if (chatId && messageId) {
-          const resultText = ghRes.ok
-            ? `✅ <b>Məktub uğurla əlavə edildi!</b> ✉️\n\n📌 <b>Başlıq:</b> ${title}\n✍️ <b>Müəllif:</b> ${author}`
-            : `❌ GitHub-a göndərilərkən xəta baş verdi.`;
-          await editMessageText(TG_TOKEN, chatId, messageId, resultText, null);
+          await editMessageText(TG_TOKEN, chatId, messageId, `✉️ <i>Məktub qeyd edildi: "${escapeHtml(title)}" (${author})</i>`);
+        }
+        // 2. İstifadəçiyə yeni təsdiq mesajı göndəririk (səs və bildiriş üçün)
+        if (chatId) {
+          await sendTelegramMessage(TG_TOKEN, chatId, resultText);
         }
       }
 
@@ -145,6 +154,7 @@ export default async function handler(req, res) {
       // Cloudinary-yə yüklə (Remote URL vasitəsilə)
       const uploadRes = await uploadUrlToCloudinary(fileUrl, {
         cloudName: CL_NAME,
+        preset: CL_PRESET || 'dunyamiz',
         apiKey: CL_KEY,
         apiSecret: CL_SECRET,
         folder: 'dunyamiz',
@@ -152,7 +162,8 @@ export default async function handler(req, res) {
       });
 
       if (!uploadRes.secure_url) {
-        await sendTelegramMessage(TG_TOKEN, chatId, '❌ Cloudinary-yə yüklənərkən xəta baş verdi.');
+        const errMsg = uploadRes.error?.message || 'Bilinməyən xəta';
+        await sendTelegramMessage(TG_TOKEN, chatId, `❌ <b>Şəkil yüklənərkən xəta:</b>\n<code>${escapeHtml(errMsg)}</code>`);
         return res.status(200).send('OK');
       }
 
@@ -173,7 +184,7 @@ export default async function handler(req, res) {
         TG_TOKEN,
         chatId,
         ghSuccess
-          ? '✅ <b>Şəkil uğurla yükləndi və saytın qalereyasına əlavə edildi!</b> 📸'
+          ? '✅ <b>Şəkil uğurla yükləndi və saytın qalereyasına əlavə edildi!</b> 📸\n🌐 <a href="https://dunyamiz-tf.vercel.app">Saytda baxmaq üçün klikləyin</a>'
           : '⚠️ Şəkil Cloudinary-yə yükləndi, lakin GitHub siyahısı yenilənə bilmədi.'
       );
       return res.status(200).send('OK');
@@ -187,13 +198,14 @@ export default async function handler(req, res) {
       const fileUrl = await getTelegramFileUrl(TG_TOKEN, audio.file_id);
 
       if (!fileUrl) {
-        await sendTelegramMessage(TG_TOKEN, chatId, '❌ Musiqi linkini əldə etmək mümkün olmadı.');
+        await sendTelegramMessage(TG_TOKEN, chatId, '❌ Musiqi linkini əldə etmək mümkün olmadı (fayl ölçüsü 20MB-dan çox ola bilər).');
         return res.status(200).send('OK');
       }
 
       // Cloudinary Musiqi hesabına yüklə
       const uploadRes = await uploadUrlToCloudinary(fileUrl, {
         cloudName: CL_MUSIC_NAME,
+        preset: CL_MUSIC_PRESET || 'dunyamiz_music',
         apiKey: CL_MUSIC_KEY,
         apiSecret: CL_MUSIC_SECRET,
         folder: 'dunyamiz_music',
@@ -201,7 +213,8 @@ export default async function handler(req, res) {
       });
 
       if (!uploadRes.secure_url) {
-        await sendTelegramMessage(TG_TOKEN, chatId, '❌ Musiqi Cloudinary-yə yüklənərkən xəta baş verdi.');
+        const errMsg = uploadRes.error?.message || 'Bilinməyən xəta';
+        await sendTelegramMessage(TG_TOKEN, chatId, `❌ <b>Musiqi yüklənərkən xəta:</b>\n<code>${escapeHtml(errMsg)}</code>`);
         return res.status(200).send('OK');
       }
 
@@ -235,7 +248,7 @@ export default async function handler(req, res) {
         TG_TOKEN,
         chatId,
         ghSuccess
-          ? `✅ <b>Musiqi uğurla yükləndi və pleylistə əlavə edildi!</b> 🎵\n📌 <b>Mahnı:</b> ${newSong.title}\n🎤 <b>İfaçı:</b> ${newSong.artist}`
+          ? `✅ <b>Musiqi uğurla yükləndi və pleylistə əlavə edildi!</b> 🎵\n📌 <b>Mahnı:</b> ${escapeHtml(newSong.title)}\n🎤 <b>İfaçı:</b> ${escapeHtml(newSong.artist)}\n🌐 <a href="https://dunyamiz-tf.vercel.app">Pleyerdə dinləmək üçün klikləyin</a>`
           : '⚠️ Musiqi Cloudinary-yə yükləndi, lakin GitHub pleylisti yenilənə bilmədi.'
       );
       return res.status(200).send('OK');
@@ -351,7 +364,7 @@ export default async function handler(req, res) {
         TG_TOKEN,
         chatId,
         ghRes.ok
-          ? `✅ <b>Məktub uğurla əlavə edildi!</b> ✉️\n\n📌 <b>Başlıq:</b> ${title}\n✍️ <b>Müəllif:</b> ${author}`
+          ? `✅ <b>Məktub uğurla əlavə edildi!</b> ✉️\n\n📌 <b>Başlıq:</b> ${escapeHtml(title)}\n✍️ <b>Müəllif:</b> ${author}\n🌐 <a href="https://dunyamiz-tf.vercel.app">Saytda oxumaq üçün klikləyin</a>`
           : '❌ Məktub GitHub-a göndərilərkən xəta baş verdi.'
       );
       return res.status(200).send('OK');
@@ -381,25 +394,43 @@ async function getTelegramFileUrl(token, fileId) {
   }
 }
 
-async function uploadUrlToCloudinary(fileUrl, { cloudName, apiKey, apiSecret, folder, resourceType = 'image' }) {
+async function uploadUrlToCloudinary(fileUrl, { cloudName, preset, apiKey, apiSecret, folder, resourceType = 'image' }) {
   try {
-    const timestamp = Math.floor(Date.now() / 1000);
-    const signatureStr = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
-    const signature = crypto.createHash('sha1').update(signatureStr).digest('hex');
-
-    const formData = new URLSearchParams();
-    formData.append('file', fileUrl);
-    formData.append('folder', folder);
-    formData.append('api_key', apiKey);
-    formData.append('timestamp', String(timestamp));
-    formData.append('signature', signature);
-
     const uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`;
-    const res = await fetch(uploadUrl, { method: 'POST', body: formData });
-    return await res.json();
+
+    // 1. Əgər unsigned preset varsa, birbaşa istifadə et (Ən etibarlı yol)
+    if (preset) {
+      const formData = new URLSearchParams();
+      formData.append('file', fileUrl);
+      formData.append('upload_preset', preset);
+      if (folder) formData.append('folder', folder);
+
+      const res = await fetch(uploadUrl, { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.secure_url) return data;
+    }
+
+    // 2. Əgər preset yoxdursa və ya xəta veribsə, signed upload yoxla
+    if (apiKey && apiSecret) {
+      const timestamp = Math.floor(Date.now() / 1000);
+      const signatureStr = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
+      const signature = crypto.createHash('sha1').update(signatureStr).digest('hex');
+
+      const formData = new URLSearchParams();
+      formData.append('file', fileUrl);
+      formData.append('folder', folder);
+      formData.append('api_key', apiKey);
+      formData.append('timestamp', String(timestamp));
+      formData.append('signature', signature);
+
+      const res = await fetch(uploadUrl, { method: 'POST', body: formData });
+      return await res.json();
+    }
+
+    return {};
   } catch (e) {
     console.error('Cloudinary Upload URL Error:', e);
-    return {};
+    return { error: { message: e.message } };
   }
 }
 
@@ -429,16 +460,19 @@ async function answerCallbackQuery(token, callbackQueryId, text) {
 
 async function editMessageText(token, chatId, messageId, text, replyMarkup) {
   try {
+    const payload = {
+      chat_id: chatId,
+      message_id: messageId,
+      text: text,
+      parse_mode: 'HTML',
+    };
+    if (replyMarkup && typeof replyMarkup === 'object') {
+      payload.reply_markup = replyMarkup;
+    }
     await fetch(`https://api.telegram.org/bot${token}/editMessageText`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: chatId,
-        message_id: messageId,
-        text,
-        parse_mode: 'HTML',
-        reply_markup: replyMarkup,
-      }),
+      body: JSON.stringify(payload),
     });
   } catch (e) {}
 }
