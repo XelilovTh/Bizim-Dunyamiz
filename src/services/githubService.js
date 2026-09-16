@@ -218,6 +218,12 @@ export async function fetchLettersFromGitHub() {
             author = 'Fidan';
           }
 
+          // Artıq köhnə botdan qalan təkrar "Sevgilə, Təhmaz və tarix" hissəsini mətndən təmizlə
+          body = body
+            .replace(/\n*---\s*\n*(💕\s*)?Sevgilə,\s*(Təhmaz|Fidan)[\s\S]*$/i, '')
+            .replace(/\n*📅\s*\d{1,2}[./]\d{1,2}[./]\d{2,4}\s*$/i, '')
+            .trim();
+
           return {
             id: file.sha,
             path: file.path,
@@ -225,7 +231,7 @@ export async function fetchLettersFromGitHub() {
             title: title || 'Məktub',
             author: author,
             date: letterDate,
-            content: body.trim(),
+            content: body,
             isFavorite: false,
           };
         } catch (e) {

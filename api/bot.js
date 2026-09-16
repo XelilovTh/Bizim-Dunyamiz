@@ -104,7 +104,7 @@ export default async function handler(req, res) {
           .replace(/\s+/g, '_') || 'Məktub';
 
         const fileName = `letters/${cleanTitle}_${Date.now()}.txt`;
-        const fullContent = `[Müəllif: ${author}]\n\n${content}\n\n---\n💕 Sevgilə, ${author}\n📅 ${new Date().toLocaleDateString('az-AZ')}`;
+        const fullContent = `[Müəllif: ${author}]\n\n${content}`;
 
         const ghRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${fileName}`, {
           method: 'PUT',
@@ -349,7 +349,7 @@ export default async function handler(req, res) {
         .replace(/\s+/g, '_') || 'Məktub';
 
       const fileName = `letters/${cleanTitle}_${Date.now()}.txt`;
-      const fullContent = `[Müəllif: ${author}]\n\n${content}\n\n---\n💕 Sevgilə, ${author}\n📅 ${new Date().toLocaleDateString('az-AZ')}`;
+      const fullContent = `[Müəllif: ${author}]\n\n${content}`;
 
       const ghRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${fileName}`, {
         method: 'PUT',
